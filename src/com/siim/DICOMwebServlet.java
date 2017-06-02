@@ -41,10 +41,9 @@ public class DICOMwebServlet extends HttpServlet {
 	        query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
 	    }
 	    
-//	    DicomWebtoDicom dw2d = new DicomWebtoDicom();
-//	    dw2d.doDcmQr(query_pairs);
+	    String dcmqr = DicomWebToDicom.doDcmQr(query_pairs);
 	    
-		response.getWriter().append(query_pairs.get("PatientID"));
+		response.getWriter().append(dcmqr);
 	}
 
 	/**
