@@ -19,8 +19,8 @@ public class DicomMain {
      */
     public static void main(String[] args) {
         Map<String,String> map = new HashMap<String, String>();
-        //map.put("Key", "Value");
-        map.put("PatientName", "SIIM*");
+        //map.put("PatientName", "ABDOMINAL*");
+        map.put("StudyInstanceUID", "1.2.124.113532.128.5.1.74.20020123.83838.579855");
         
         DicomWebToDicom.doDcmQr(map);
       }

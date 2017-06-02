@@ -13,6 +13,7 @@ import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.net.ConfigurationException;
 import org.dcm4che2.tool.dcmqr.DcmQR;
+import org.dcm4che2.tool.dcmqr.DcmQR.QueryRetrieveLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DicomWebToDicom {
     
-	private static final Logger LOG = LoggerFactory.getLogger(DcmQR.class);
-    static private String AE = "DCM4CHEE";
+	static private String AE = "DCM4CHEE";
     static private String IP = "192.168.56.101";
 
     public static String doDcmQr(Map<String, String> map){
@@ -38,6 +38,7 @@ public class DicomWebToDicom {
         	dcmqr.setRemoteHost(IP);
         	dcmqr.setRemotePort(11112);
         	dcmqr.configureTransferCapability(true);
+        	dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.STUDY);
         	
         	System.out.println("Apply Options");
         	for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -52,10 +53,14 @@ public class DicomWebToDicom {
         	System.out.println("opened");
         	List<DicomObject> result = dcmqr.query();
         	System.out.println("Complete Query");
+        	       	
+        	System.out.println(result.size());
         	
         	s = result.toString();
         	System.out.println(s);
-			
+        	
+        	dcmqr.close();
+        	dcmqr.stop();			
 		} catch (IOException | InterruptedException | ConfigurationException e) {
 			e.printStackTrace();
 		}
