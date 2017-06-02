@@ -38,12 +38,20 @@ public class DicomWebToDicom {
         	dcmqr.setRemoteHost(IP);
         	dcmqr.setRemotePort(11112);
         	dcmqr.configureTransferCapability(true);
-        	
         	System.out.println("Apply Options");
+        	dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.STUDY);
+            
         	for (Map.Entry<String, String> entry : map.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                dcmqr.addMatchingKey(Tag.toTagPath(key), value);
+                if(value.length()==0)
+                {
+                	dcmqr.addReturnKey(new int[]{Tag.toTag(key)});
+                }
+                else
+                {
+                	dcmqr.addMatchingKey(Tag.toTagPath(key), value);
+                }
         	}
         	
         	dcmqr.start();
