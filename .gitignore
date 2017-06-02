@@ -1,0 +1,7 @@
+
+target/m2e-wtp/web-resources/META-INF/maven/DICOMweb/DICOMweb/pom.xml
+target/classes/com/siim/DicomMain.class
+target/classes/com/siim/DICOMwebServlet.class
+target/classes/com/siim/DicomWebToDicom.class
+target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+target/m2e-wtp/web-resources/META-INF/maven/DICOMweb/DICOMweb/pom.properties

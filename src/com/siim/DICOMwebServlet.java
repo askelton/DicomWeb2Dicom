@@ -13,11 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class DICOMwebServlet
  */
 @WebServlet("/DICOMwebServlet")
 public class DICOMwebServlet extends HttpServlet {
+	static Logger log = Logger.getLogger(DICOMwebServlet.class);
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -34,6 +37,11 @@ public class DICOMwebServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String> query_pairs = new LinkedHashMap<String, String>();
 		String requestedString = request.getQueryString();
+		if(requestedString==null)
+		{	
+			response.getWriter().append("No Parameters defined, please add some constraints");
+			return;
+		}
 //		response.getWriter().append(requestedString);
 		String[] pairs = requestedString.split("&");
 	    for (String pair : pairs) {
