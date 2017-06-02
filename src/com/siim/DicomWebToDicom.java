@@ -27,8 +27,9 @@ public class DicomWebToDicom {
         DicomWebToDicom.AE = AE;
     }
     
-    public static void doDcmQr(Map<String, String> map){
-        
+    public static String doDcmQr(Map<String, String> map){
+    	String s = "";
+    	
         //dcmqr DCM4CHEE@ip_address:1112 -qDicomTag=Value
         StringBuilder sb = new StringBuilder();
         sb.append("dcmqr ");
@@ -50,19 +51,28 @@ public class DicomWebToDicom {
         // Get runtime
         Runtime rt = Runtime.getRuntime();
         // Start a new process: UNIX command ls
-        Process p = rt.exec("java -version");
+        Process process = rt.exec(cmd);
         
-        BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = "";
+        // Get input streams
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-        while ((line = b.readLine()) != null) {
-          System.out.println(line);
-        }
+            // Read command standard output            
+            System.out.println("Standard output: ");
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
 
-        b.close();
+            // Read command errors
+            System.out.println("Standard error: ");
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
+        
+        return s;
         
       }
     
