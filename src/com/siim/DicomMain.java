@@ -18,8 +18,8 @@ public class DicomMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Map<String,String> map = new HashMap();
-        map.put("Key", "Value");
+        Map<String,String> map = new HashMap<String, String>();
+        //map.put("Key", "Value");
         map.put("PatientName", "SIIM*");
         
         DicomWebToDicom.doDcmQr(map);

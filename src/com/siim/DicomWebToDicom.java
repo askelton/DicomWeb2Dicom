@@ -5,10 +5,15 @@
  */
 package com.siim;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
+
+import org.dcm4che2.data.DicomObject;
+import org.dcm4che2.data.Tag;
+import org.dcm4che2.tool.dcmqr.DcmQR;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -16,8 +21,43 @@ import java.util.Map;
  */
 public class DicomWebToDicom {
     
+	private static final Logger LOG = LoggerFactory.getLogger(DcmQR.class);
     static private String AE = "DCM4CHEE";
     static private String IP = "localhost";
+
+    public static String doDcmQr(Map<String, String> map){
+    	String s = "";
+    	
+        try {
+        	System.out.println("Pre");
+        	DcmQR dcmqr = new DcmQR(AE);
+        
+        	System.out.println("PreStart");
+        	dcmqr.start();
+        	
+        	dcmqr.setCalling(AE);
+        	dcmqr.setLocalHost(IP);
+        	dcmqr.setLocalPort(11112);
+        	
+        	System.out.println("PreOpts");
+        	for (Map.Entry<String, String> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                dcmqr.addMatchingKey(Tag.toTagPath(key), value);
+        	}
+            
+        	System.out.println(dcmqr.toString());
+        	        
+        	List<DicomObject> list = dcmqr.query();
+        	s = list.toString();
+			
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+ 
+        return s;
+        
+      }
 
     public static String getAE() {
         return AE;
@@ -27,53 +67,12 @@ public class DicomWebToDicom {
         DicomWebToDicom.AE = AE;
     }
     
-    public static String doDcmQr(Map<String, String> map){
-    	String s = "";
-    	
-        //dcmqr DCM4CHEE@ip_address:1112 -qDicomTag=Value
-        StringBuilder sb = new StringBuilder();
-        sb.append("dcmqr ");
-        sb.append("-L SIIM ");
-        sb.append(AE);
-        sb.append("@"+IP+":11112 ");
-        
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            sb.append("-q"+key+"="+value+" ");
-        }
-        
-        String cmd = sb.toString();
-        
-        System.out.println(cmd);
-        
-        try{
-        // Get runtime
-        Runtime rt = Runtime.getRuntime();
-        // Start a new process: UNIX command ls
-        Process process = rt.exec(cmd);
-        
-        // Get input streams
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+	public static String getIP() {
+		return IP;
+	}
 
-            // Read command standard output            
-            System.out.println("Standard output: ");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-            }
-
-            // Read command errors
-            System.out.println("Standard error: ");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-        }
-        
-        return s;
-        
-      }
+	public static void setIP(String iP) {
+		IP = iP;
+	}
     
 }
