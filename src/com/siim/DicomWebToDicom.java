@@ -48,6 +48,24 @@ public class DicomWebToDicom {
                 {
                 	dcmqr.addReturnKey(new int[]{Tag.toTag(key)});
                 }
+                else if(key.equals("queryLevel")){
+                	switch(value){
+                	case "patient":
+                	case "PATIENT":
+                		dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.PATIENT);
+                		break;
+                	case "series":
+                	case "SERIES":
+                		dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.SERIES);
+                		break;
+                	case "study":
+                	case "STUDY":
+                	default:	
+                		dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.STUDY);
+                		break;
+                		
+                	}
+                }
                 else
                 {
                 	dcmqr.addMatchingKey(Tag.toTagPath(key), value);
