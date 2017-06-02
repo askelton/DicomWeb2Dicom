@@ -5,6 +5,9 @@
  */
 package com.siim;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 /**
@@ -29,6 +32,7 @@ public class DicomWebToDicom {
         //dcmqr DCM4CHEE@ip_address:1112 -qDicomTag=Value
         StringBuilder sb = new StringBuilder();
         sb.append("dcmqr ");
+        sb.append("-L SIIM ");
         sb.append(AE);
         sb.append("@"+IP+":11112 ");
         
@@ -41,6 +45,25 @@ public class DicomWebToDicom {
         String cmd = sb.toString();
         
         System.out.println(cmd);
+        
+        try{
+        // Get runtime
+        Runtime rt = Runtime.getRuntime();
+        // Start a new process: UNIX command ls
+        Process p = rt.exec("java -version");
+        
+        BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = "";
+
+        while ((line = b.readLine()) != null) {
+          System.out.println(line);
+        }
+
+        b.close();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        
       }
     
 }
