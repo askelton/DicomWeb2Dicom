@@ -62,6 +62,10 @@ public class DicomWebToDicom {
 					case "SERIES":
 						dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.SERIES);
 						break;
+					case "image":
+					case "IMAGE":
+						dcmqr.setQueryLevel(DcmQR.QueryRetrieveLevel.IMAGE);
+						break;
 					case "study":
 					case "STUDY":
 					default:
@@ -77,10 +81,10 @@ public class DicomWebToDicom {
 			dcmqr.start();
 			dcmqr.open();
 			List<DicomObject> result = dcmqr.query();
-			System.out.println("Complete Query");
+//			System.out.println("Complete Query");
 
 			s = convert(result);
-			System.out.println("Convert Complete");
+//			System.out.println("Convert Complete");
 
 			dcmqr.close();
 			dcmqr.stop();

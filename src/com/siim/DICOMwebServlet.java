@@ -38,7 +38,12 @@ public class DICOMwebServlet extends HttpServlet {
 		String[] pairs = requestedString.split("&");
 	    for (String pair : pairs) {
 	        int idx = pair.indexOf("=");
-	        query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+	        String key = URLDecoder.decode(pair.substring(0, idx), "UTF-8");
+	        String value = URLDecoder.decode(pair.substring(idx + 1), "UTF-8");
+	        if(key.toLowerCase().equals("includefield"))
+	        	query_pairs.put(value, "");
+	        else
+	        	query_pairs.put(key, value);
 	    }
 	    
 	    String dcmqr = DicomWebToDicom.doDcmQr(query_pairs);
